@@ -1,0 +1,70 @@
+@model ProjetFinal.Models.Question
+
+@{
+    ViewData["Title"] = "Réviser un Quiz";
+}
+
+<h3 class="text-primary text-center">Quiz numéro @ViewBag.QuizId de @ViewBag.UserName</h3>
+<h4 class="text-info text-center" style="color:green">
+    @ViewBag.SumRightAnswers / @ViewBag.SumFinishQuestions bonnes réponse
+</h4>
+
+<hr/>
+
+
+<div class="row">
+    <div class="offset-1 col-10">
+        <form>
+            @foreach (var itemQuestion in ViewBag.Questions)    //les questions pour l'utilisateur
+            {
+                <p class="font-weight-bold">@itemQuestion.Text</p>
+                <div class="border"  style="pointer-events:none">
+                    @foreach (var itemOption in ViewBag.Options)    //toutes les options
+                    {
+                        @if (itemOption.QuestionId == itemQuestion.QuestionId)    //les options pour la question
+                        {
+
+                            @if (itemOption.IsRight)
+                            {
+                                <input type="radio" checked style="accent-color: green;" />
+                            }
+                            else
+                            {
+                                
+                                bool contains = false;
+                                foreach(var itemAnswer in ViewBag.Answers)
+                                {
+                                    if (itemAnswer.OptionId == itemOption.OptionId)
+                                    {
+                                        contains = true;
+                                    }
+                                }
+                                if (contains)
+                                {
+                                    <input type="radio" checked style="accent-color: red;" />
+                                }
+                                else
+                                {
+                                    <input type="radio"/>
+                                }
+                               
+                            }
+                            <label>@itemOption.Text</label><br />
+
+
+                        }
+
+
+                    }
+                </div>
+                <br/>
+            }
+            <br/>
+            <div class="text-center">
+                <a asp-action="ReviserQuiz">
+                    <input type="button" value="Retour" class="btn btn-primary"/>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

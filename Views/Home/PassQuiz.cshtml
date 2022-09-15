@@ -1,0 +1,63 @@
+﻿@model ProjetFinal.Models.Quiz
+
+@{
+    ViewData["Title"] = "passQuiz";
+}
+
+@*<h1>Passer un Quiz</h1>*@
+
+<h4 style="color:green">1.- Trouver les quiz d'un utilisateur</h4>
+<hr/>
+<div class="row">
+    <div @*class="col-md-4"*@ class="card card-outline-primary m-4 p-lg-4">
+        <form asp-action="passQuiz">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="QuizId"/>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>              
+                <input asp-for="UserName" class="form-control" />
+                @*<span asp-validation-for="UserName" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                @*<span asp-validation-for="Email" class="text-danger"></span>*@
+            </div>
+            <div>
+                <h4 style="color:red">@ViewBag.noUserFound</h4>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Trouver" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*George ----- Avec le dropdown*@
+@if (ViewBag.quizzezFound)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h4>2.- Choisir un quiz</h4>
+            <form asp-action="AnswersToQuiz">
+                <input type="hidden" asp-for="UserName"/> @*Pour récupérer le nom du User*@
+                <select name="QuizId" class="form-control">
+                    @foreach (var quiz in ViewBag.listeQuizes)
+                    {
+                        <option value="@quiz.QuizId">Quiz @quiz.QuizId</option>
+                    }
+                </select><br/>
+                <input type="submit" value="Passer" class="btn btn-primary"/>
+                <a asp-action="passQuiz">
+                    <input type="button" value="Annuler" class="btn btn-secondary"/>
+                </a>
+            </form>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

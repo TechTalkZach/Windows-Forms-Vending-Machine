@@ -1,0 +1,54 @@
+﻿@model ProjetFinal.Models.Quiz
+
+@{
+    ViewData["Title"] = "NewQuizz";
+}
+
+<h1>Nouveau Quizz</h1>
+ 
+<hr />
+<div class="row">
+    <div @*class="col-md-4"*@ class="card card-outline-primary m-4 p-lg-4">
+        <form asp-action="SubmitNewQuizz">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div>
+                <label for="easyQuestions">Nombre de questions de type :  </label> <label style="color:blue" ; font-weight="bold"> Facile</label>
+                <input type="number" id="easyQuestions" name="easyQuestions" min="0"/>
+            </div>
+            <div>
+                <label for="mediumQuestions">Nombre de questions de type :  </label> <label style="color:blue"; font-weight="bold"> Moyen</label>
+                <input type="number" id="mediumQuestions" name="mediumQuestions" min="0"/>
+            </div>
+            <div>
+                <label for="hardQuestions">Nombre de questions de type :  </label> <label style="color:blue" ; font-weight="bold"> Difficile</label>
+                <input type="number" id="hardQuestions" name="hardQuestions" min="0"/>
+            </div>
+            <div>
+                <h3 style="color:red">@ViewBag.questionsInsuffissantes</h3>
+                <h3 style="color:green">@ViewBag.quizzSaved</h3>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,98 @@
+﻿@model ProjetFinal.Models.Quiz
+
+@{
+    ViewData["Title"] = "Réviser un Quiz";
+}
+
+@*<h1>Reviser un Quiz</h1>*@
+
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" asp-href-include="/lib/bootstrap/dist/**/*.min.css"
+          asp-href-exclude="**/*-reboot*,**/*-grid" />
+    <title>Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <h4 style="color:green">1.- Trouver les quiz a reviser d'un utilisateur</h4>
+    <hr />
+    <div class="row">
+        <div @*class="col-md-4"*@ class="card card-outline-primary m-4 p-lg-4">
+            <form asp-action="ReviserQuiz">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="QuizId" />
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span class="badge badge-pill badge-primary" style="float:left" asp-validation-for="UserName"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span class="badge badge-pill badge-primary" style="float:left" asp-validation-for="Email"></span>
+                </div>
+                <div>
+                    <h4 style="color:red">@ViewBag.noReviserQuizFound</h4>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Trouver" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @*George ----- Avec le dropdown*@
+    @if (ViewBag.reviserQuizFound)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <h4>2.- Choisir un quiz</h4>
+                <form asp-action="ReviewAnswersToQuiz">
+                    <input type="hidden" asp-for="UserName" /> @*Pour récupérer le nom du User*@
+                    <input type="hidden" asp-for="Email" />
+                    <select name="QuizId" class="form-control">
+                        @foreach (var quiz in ViewBag.listeRevizerQuizes)
+                        {
+                            <option value="@quiz.QuizId">Quiz @quiz.QuizId</option>
+                        }
+                    </select><br />
+                    <input type="submit" value="Réviser" class="btn btn-primary" />
+                    <a asp-action="ReviserQuiz">
+                        <input type="button" value="Annuler" class="btn btn-secondary" />
+                    </a>
+                </form>
+            </div>
+        </div>
+    }
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+}
+
+@* <script type="text/javascript"> *@
+@* *@
+@* function Reset1() { *@
+@*         document.getElementById("<%=txt1.ClientID%>").value = ""; *@
+@*         document.getElementById("<%=txt2.ClientID%>").value = ""; *@
+@*         return false; *@
+@*     } *@
+@* *@
+@*  function Reset2() { *@
+@*         this.document.location = this.document.location; *@
+@*         return false;    *@
+@* } *@
+@* </script> *@

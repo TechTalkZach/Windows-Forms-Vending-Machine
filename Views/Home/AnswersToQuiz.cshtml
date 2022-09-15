@@ -1,0 +1,54 @@
+@model ProjetFinal.Models.Question
+
+@{
+    ViewData["Title"] = "Quiz";
+}
+
+<h3 class="text-primary text-center">Quiz numéro @ViewBag.QuizId de @ViewBag.UserName</h3>
+
+<hr/>
+
+
+<div class="row">
+    <div class="offset-1 col-10">
+        <form >
+            @foreach (var itemQuestion in ViewBag.Questions)
+            {
+                <p class="font-weight-bold">@itemQuestion.Text</p>
+                <div class="border">
+                    @foreach (var itemOption in ViewBag.Options)
+                    {
+                        @if (itemOption.QuestionId == itemQuestion.QuestionId)
+                        {
+                            var insert = false;
+                            @foreach (var itemAnswer in ViewBag.Answers)
+                            {
+                                @if (itemAnswer.OptionId == itemOption.OptionId)
+                                {
+                                    <input type="radio" name="@itemQuestion.QuestionId" class="ml-3 mt-1" checked="checked"/>
+                                    <label>@itemOption.Text</label>
+                                    <br/>
+                                    insert = true;
+                                }
+                            }
+                            @if (!insert)
+                            {
+                                <input type="radio" name="@itemQuestion.QuestionId" class="ml-3 mt-1"/>
+                                <label>@itemOption.Text</label>
+                                <br/>
+                            }
+                        }
+                    }
+                </div>
+                <br/>
+            }
+            <br/>
+            <div class="text-center">
+                <input type="submit" value="Soumettre" class="btn btn-primary"/>
+                <a asp-action="passQuiz">
+                    <input type="button" value="Annuler" class="btn btn-secondary"/>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
